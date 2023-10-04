@@ -1,0 +1,41 @@
+{
+  "name": "w3c-validator",
+  "version": "0.1.0",
+  "description": "Tool for validating html according W3C rules",
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Mrowa96/w3c-validator/issues"
+  },
+  "homepage": "https://github.com/Mrowa96/w3c-validator#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Mrowa96/w3c-validator.git"
+  },
+  "keywords": [
+    "html",
+    "w3c",
+    "validator"
+  ],
+  "type": "module",
+  "engineStrict": true,
+  "engines": {
+    "node": ">=18.16.0",
+    "npm": ">=9.5.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "fast-glob": "3.3.1",
+    "undici": "5.25.4"
+  },
+  "devDependencies": {
+    "@types/node": "18.16.1",
+    "@typescript-eslint/eslint-plugin": "6.7.4",
+    "@typescript-eslint/parser": "6.7.4",
+    "eslint": "8.50.0",
+    "prettier": "3.0.3",
+    "typescript": "5.1.6"
+  }
+}
