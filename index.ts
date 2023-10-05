@@ -1,34 +1,32 @@
-import { request } from 'undici';
-import { readFile, writeFile } from 'fs/promises';
-
-const DEFAULT_USER_AGENT =
-  'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.101 Safari/537.36';
+import glob from 'fast-glob';
+import { checkFile } from './src/checkFile.js';
+import { MemoryUsageReporter } from './src/MemoryUsageReporter.js';
+import { TotalTimeReporter } from './src/TotalTimeReporter.js';
+import { ResultsReporter } from './src/ResultsReporter.js';
 
 try {
-  const fileContent = await readFile('./invalid.html', { encoding: 'utf8' });
+  const memoryUsageReporter = new MemoryUsageReporter();
+  const totalTimeReporter = new TotalTimeReporter();
 
-  const { statusCode, body } = await request('https://validator.nu/?out=json', {
-    method: 'POST',
-    body: fileContent,
-    headers: {
-      'User-Agent': DEFAULT_USER_AGENT,
-      'Content-Type': 'text/html; charset=utf-8',
-    },
-  });
+  memoryUsageReporter.mark('Start');
+  totalTimeReporter.start();
 
-  if (statusCode !== 200) {
-    throw new Error(`Status code ${statusCode}`);
-  }
+  const paths = await glob('./test-build/**/*.html');
 
-  const results = await body.json();
-  // Only for tests
-  const stringifiedJsonResults = JSON.stringify(results, undefined, 2);
+  memoryUsageReporter.mark('Paths read');
 
-  if (typeof stringifiedJsonResults !== 'string') {
-    throw new Error(`Parsed body is not a string`);
-  }
+  const results = await Promise.allSettled(paths.map(checkFile));
+  const resultsReporter = new ResultsReporter(results);
 
-  await writeFile('./output.json', stringifiedJsonResults, { encoding: 'utf8' });
+  memoryUsageReporter.mark('Files checked');
+  totalTimeReporter.end();
+
+  resultsReporter.report();
+  memoryUsageReporter.report();
+  totalTimeReporter.report();
+
+  process.exit(0);
 } catch (error) {
   console.error(error);
+  process.exit(1);
 }

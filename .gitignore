@@ -30,4 +30,4 @@ node_modules/
 
 # Project files and directories
 dist/
-output.json
+test-build/
