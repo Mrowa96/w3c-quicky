@@ -24,7 +24,7 @@ export class TotalTimeReporter {
 
     this.#observer.disconnect();
 
-    console.log(
+    console.info(
       `Total time: ${measure.duration.toLocaleString('en', {
         compactDisplay: 'short',
       })}ms`,

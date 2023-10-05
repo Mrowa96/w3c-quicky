@@ -14,7 +14,7 @@ export class MemoryUsageReporter {
   }
 
   report() {
-    console.log('Memory usage:');
+    console.info('Memory usage:');
     console.table(
       this.#marks.reduce((accumulator, { heapUsed, label }) => {
         return {

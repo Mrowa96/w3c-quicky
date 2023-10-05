@@ -8,12 +8,6 @@ export class ResultsReporter {
   }
 
   report() {
-    this.#results.forEach(result => {
-      if (result.status === 'rejected' && result.reason instanceof ResultError) {
-        console.log(result.reason.path, result.reason.message);
-      }
-    });
-
     console.table(
       this.#results.reduce((accumulator, result) => {
         if (result.status === 'fulfilled') {
