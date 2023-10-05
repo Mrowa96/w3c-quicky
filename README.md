@@ -16,4 +16,4 @@ Make checking html fast 🔥🔥🔥
 - Publish to npm as esm package
 - Add configuration file with ignoring rules
 - Setup github actions
-- Add checksums and cache result
+- Add checksums and cache results?

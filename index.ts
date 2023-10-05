@@ -1,8 +1,8 @@
 import glob from 'fast-glob';
-import { checkFile } from './src/checkFile.js';
 import { MemoryUsageReporter } from './src/MemoryUsageReporter.js';
 import { TotalTimeReporter } from './src/TotalTimeReporter.js';
 import { ResultsReporter } from './src/ResultsReporter.js';
+import { FileValidator } from './src/FileValidator/FileValidator.js';
 
 try {
   const memoryUsageReporter = new MemoryUsageReporter();
@@ -14,7 +14,12 @@ try {
   const paths = await glob('./test-build/**/*.html');
 
   memoryUsageReporter.mark('Paths read');
-  const results = await Promise.allSettled(paths.map(checkFile));
+
+  const results = await Promise.allSettled(
+    paths.map(path => {
+      return new FileValidator(path).validate();
+    }),
+  );
   const resultsReporter = new ResultsReporter(results);
 
   memoryUsageReporter.mark('Files checked');

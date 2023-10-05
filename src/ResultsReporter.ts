@@ -1,9 +1,10 @@
-import { ResultError, type CheckFileResult } from './checkFile.js';
+import { FileValidationError } from './FileValidator/FileValidationError.js';
+import type { FileValidationResult } from './FileValidator/types.js';
 
 export class ResultsReporter {
   #results;
 
-  constructor(results: PromiseSettledResult<CheckFileResult>[]) {
+  constructor(results: PromiseSettledResult<FileValidationResult>[]) {
     this.#results = results;
   }
 
@@ -11,13 +12,15 @@ export class ResultsReporter {
     console.table(
       this.#results.reduce((accumulator, result) => {
         if (result.status === 'fulfilled') {
+          const hasErrors = result.value.results.messages.length > 0;
+
           return {
             ...accumulator,
-            [result.value.path]: result.value.statusCode,
+            [result.value.path]: hasErrors ? '💩' : '✅',
           };
         }
 
-        if (result.reason instanceof ResultError) {
+        if (result.reason instanceof FileValidationError) {
           return {
             ...accumulator,
             [result.reason.path]: result.reason.message,
@@ -26,7 +29,7 @@ export class ResultsReporter {
 
         return {
           ...accumulator,
-          [`unknown-${crypto.randomUUID()}`]: 'What have happened here? 🧐',
+          [result.reason.path]: 'What have happened here? 🧐',
         };
       }, {}),
     );
