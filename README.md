@@ -15,6 +15,5 @@ Make checking html fast 🔥🔥🔥
 - Add basic cli with ability to provide directory/file path to check
 - Publish to npm as esm package
 - Add configuration file with ignoring rules
-- Setup husky
 - Setup github actions
 - Add checksums and cache result

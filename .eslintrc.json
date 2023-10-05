@@ -16,5 +16,6 @@
         "argsIgnorePattern": "^_"
       }
     ]
-  }
+  },
+  "ignorePatterns": ["node_modules", "dist", "test-build"]
 }

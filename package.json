@@ -24,8 +24,13 @@
     "npm": ">=9.5.0"
   },
   "scripts": {
+    "prepare": "husky install",
     "start": "tsc -w",
-    "build": "tsc"
+    "build": "tsc",
+    "check:lint": "eslint . --ext .ts",
+    "check:fmt": "prettier -c \"**/*.{ts,json,md}\"",
+    "check:types": "tsc --noEmit",
+    "check:all": "concurrently -g --timings \"npm:check:lint\"  \"npm:check:fmt\" \"npm:check:types\""
   },
   "dependencies": {
     "fast-glob": "3.3.1",
@@ -35,8 +40,10 @@
     "@types/node": "18.16.1",
     "@typescript-eslint/eslint-plugin": "6.7.4",
     "@typescript-eslint/parser": "6.7.4",
+    "concurrently": "8.2.1",
     "eslint": "8.50.0",
     "eslint-config-prettier": "9.0.0",
+    "husky": "8.0.3",
     "prettier": "3.0.3",
     "typescript": "5.2.2"
   }
