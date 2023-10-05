@@ -1,0 +1,10 @@
+.husky/
+.vscode/
+dist/tsconfig.tsbuildinfo
+src/
+.eslintrc.json
+.nvmrc
+.prettierignore
+.prettierrc.json
+index.ts
+tsconfig.json

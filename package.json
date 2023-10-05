@@ -1,8 +1,8 @@
 {
   "name": "w3c-quicky",
   "version": "0.1.0",
-  "description": "Tool for validating files according W3C rules",
-  "author": "",
+  "description": "Tool for validating files according to W3C rules",
+  "author": "Paweł Mrowiec (https://github.com/mrowa96)",
   "license": "MIT",
   "homepage": "https://github.com/Mrowa96/w3c-validator#readme",
   "bugs": {
@@ -15,7 +15,8 @@
   "keywords": [
     "html",
     "w3c",
-    "validator"
+    "validator",
+    "validate"
   ],
   "main": "./dist/index.js",
   "type": "module",
