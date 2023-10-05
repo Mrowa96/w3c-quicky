@@ -14,7 +14,6 @@ try {
   const paths = await glob('./test-build/**/*.html');
 
   memoryUsageReporter.mark('Paths read');
-
   const results = await Promise.allSettled(paths.map(checkFile));
   const resultsReporter = new ResultsReporter(results);
 

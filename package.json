@@ -17,6 +17,7 @@
     "w3c",
     "validator"
   ],
+  "main": "./dist/index.js",
   "type": "module",
   "engineStrict": true,
   "engines": {
