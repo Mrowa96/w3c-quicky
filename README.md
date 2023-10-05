@@ -1,8 +1,6 @@
-# W3C validator
+# w3c-quicky
 
-## Goal?
-
-Make checking html fast 🔥🔥🔥
+Check your code according to w3c rules in fast and efficient way 🔥
 
 ## How to work with code? (For now)
 
