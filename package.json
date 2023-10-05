@@ -18,7 +18,9 @@
     "validator",
     "validate"
   ],
-  "main": "./dist/index.js",
+  "bin": {
+    "w3c-quicky": "./dist/bin/index.js"
+  },
   "type": "module",
   "engineStrict": true,
   "engines": {
@@ -35,6 +37,7 @@
     "check:all": "concurrently -g --timings \"npm:check:lint\"  \"npm:check:fmt\" \"npm:check:types\""
   },
   "dependencies": {
+    "commander": "11.0.0",
     "fast-glob": "3.3.1",
     "undici": "5.25.4"
   },

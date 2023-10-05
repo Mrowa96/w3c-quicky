@@ -15,7 +15,7 @@ coverage/
 node_modules/
 
 # TypeScript
-*.tsbuildinfo
+**/*.tsbuildinfo
 
 # Optional eslint cache
 .eslintcache
@@ -32,4 +32,5 @@ node_modules/
 
 # Project files and directories
 dist/
+package/
 test-build/

@@ -18,6 +18,7 @@ export class FileValidator {
     const response = await request('https://validator.w3.org/nu/?out=json', {
       method: 'POST',
       body: this.#content,
+      bodyTimeout: 5000,
       headers: {
         'User-Agent': DEFAULT_USER_AGENT,
         'Content-Type': 'text/html; charset=utf-8',

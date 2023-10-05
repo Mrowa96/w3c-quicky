@@ -9,29 +9,37 @@ export class ResultsReporter {
   }
 
   report() {
-    console.table(
-      this.#results.reduce((accumulator, result) => {
-        if (result.status === 'fulfilled') {
-          const hasErrors = result.value.results.messages.length > 0;
+    let isSuccessfull = true;
 
-          return {
-            ...accumulator,
-            [result.value.path]: hasErrors ? '💩' : '✅',
-          };
-        }
-
-        if (result.reason instanceof FileValidationError) {
-          return {
-            ...accumulator,
-            [result.reason.path]: result.reason.message,
-          };
-        }
+    const data = this.#results.reduce((accumulator, result) => {
+      if (result.status === 'fulfilled') {
+        const hasErrors = result.value.results.messages.length > 0;
 
         return {
           ...accumulator,
-          [result.reason.path]: 'What have happened here? 🧐',
+          [result.value.path]: hasErrors ? '💩' : '✅',
         };
-      }, {}),
-    );
+      }
+
+      isSuccessfull = false;
+
+      if (result.reason instanceof FileValidationError) {
+        return {
+          ...accumulator,
+          [result.reason.path]: result.reason.message,
+        };
+      }
+
+      return {
+        ...accumulator,
+        [result.reason.path]: 'What have happened here? 🧐',
+      };
+    }, {});
+
+    console.table(data);
+
+    return {
+      isSuccessfull,
+    };
   }
 }
