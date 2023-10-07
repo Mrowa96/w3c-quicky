@@ -37,6 +37,7 @@
     "check:all": "concurrently -g --timings \"npm:check:lint\"  \"npm:check:fmt\" \"npm:check:types\""
   },
   "dependencies": {
+    "chalk": "5.3.0",
     "commander": "11.0.0",
     "fast-glob": "3.3.1",
     "undici": "5.25.4"

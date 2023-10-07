@@ -16,7 +16,7 @@ Check your code according to w3c rules in fast and efficient way 🔥
 
 ## TODO:
 
-- Better error reporting
+- Add tests
 - Add configuration file with ignoring rules
 - Setup github actions
 - Add checksums and cache results?
