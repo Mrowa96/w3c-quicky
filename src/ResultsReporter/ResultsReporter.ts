@@ -7,7 +7,7 @@ export class ResultsReporter {
   #results;
   #displayAllMessage;
 
-  constructor(results: PromiseSettledResult<FileValidationResult>[], displayAllMessage = false) {
+  constructor(results: PromiseSettledResult<FileValidationResult>[], displayAllMessage: boolean) {
     this.#logger = new ResultsLogger();
     this.#results = results;
     this.#displayAllMessage = displayAllMessage;

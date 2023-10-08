@@ -40,4 +40,5 @@ test-build/
 .nvmrc
 .prettierignore
 .prettierrc.json
+output.json
 tsconfig.json
