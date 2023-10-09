@@ -1,12 +1,23 @@
+import type { Config } from './Config.js';
+
 type Mark = {
   heapUsed: number;
   label: string;
 };
 
 export class MemoryUsageReporter {
+  #config;
   #marks: Mark[] = [];
 
+  constructor(config: Config) {
+    this.#config = config;
+  }
+
   mark(label: string) {
+    if (!this.#config.isDebug) {
+      return;
+    }
+
     this.#marks.push({
       heapUsed: process.memoryUsage().heapUsed,
       label,
@@ -14,6 +25,10 @@ export class MemoryUsageReporter {
   }
 
   report() {
+    if (!this.#config.isDebug) {
+      return;
+    }
+
     console.info('\nMemory usage:');
     console.table(
       this.#marks.reduce((accumulator, { heapUsed, label }) => {

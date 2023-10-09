@@ -1,5 +1,6 @@
 import { readFile } from 'fs/promises';
 import { request, type Dispatcher } from 'undici';
+import type { Config } from '../Config.js';
 import { FileValidationError } from './FileValidationError.js';
 import type { FileValidationResult } from './types.js';
 
@@ -8,10 +9,12 @@ const DEFAULT_USER_AGENT =
 
 export class FileValidator {
   #path;
+  #config;
   #content: string | undefined;
 
-  constructor(path: string) {
+  constructor(path: string, config: Config) {
     this.#path = path;
+    this.#config = config;
   }
 
   async #sendRequest(tryCount = 0): Promise<Dispatcher.ResponseData> {
@@ -41,10 +44,16 @@ export class FileValidator {
         throw new Error(`Invalid status code: ${statusCode}`);
       }
 
+      const responseBody = (await body.json()) as FileValidationResult['results'];
+      const preparedMessages = responseBody.messages.filter(
+        ({ message }) => !this.#config.ignoredRules.includes(message),
+      );
+
       return {
         path: this.#path,
-        // TODO Validate response body
-        results: (await body.json()) as FileValidationResult['results'],
+        results: {
+          messages: preparedMessages,
+        },
       };
     } catch (error) {
       throw new FileValidationError(this.#path, 'Validation failed 😭', {

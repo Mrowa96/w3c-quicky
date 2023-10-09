@@ -42,3 +42,4 @@ test-build/
 .prettierrc.json
 output.json
 tsconfig.json
+w3cquicky.json

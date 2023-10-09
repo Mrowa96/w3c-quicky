@@ -1,55 +1,51 @@
 #! /usr/bin/env node
-import { program } from 'commander';
-import glob from 'fast-glob';
+import chalk from 'chalk';
 import { MemoryUsageReporter } from '../src/MemoryUsageReporter.js';
 import { TotalTimeReporter } from '../src/TotalTimeReporter.js';
 import { ResultsReporter } from '../src/ResultsReporter/ResultsReporter.js';
 import { FileValidator } from '../src/FileValidator/FileValidator.js';
 import { ResultsWriter } from '../src/ResultsWriter.js';
+import { Config } from '../src/Config.js';
 import { EXIT_CODE_SUCCESS, EXIT_CODE_ERROR, EXIT_CODE_NO_SOURCES } from './consts.js';
 
 try {
-  program
-    .argument('<source>')
-    .option('-d --debug', 'Display additional debug information about the process', false)
-    .option('-a --all', 'Display all validation errors', false)
-    .option('-o --output [path]', 'Save output to file under given path')
-    .parse();
-
-  const memoryUsageReporter = new MemoryUsageReporter();
   const totalTimeReporter = new TotalTimeReporter();
-  const isDebug: boolean = program.getOptionValue('debug');
-  const displayAllMessage: boolean = program.getOptionValue('all');
-  const outputPath: string | undefined = program.getOptionValue('output');
 
-  isDebug && memoryUsageReporter.mark('Start');
   totalTimeReporter.start();
 
-  const paths = await glob(program.args);
+  const config = await new Config().init();
 
-  if (!paths.length) {
+  const memoryUsageReporter = new MemoryUsageReporter(config);
+
+  memoryUsageReporter.mark('Config inited');
+
+  if (!config.paths.length) {
+    console.log(chalk.red('Cannot find any files to validate.'));
     process.exit(EXIT_CODE_NO_SOURCES);
   }
 
   const results = await Promise.allSettled(
-    paths.map(path => {
-      return new FileValidator(path).validate();
+    config.paths.map(path => {
+      return new FileValidator(path, config).validate();
     }),
   );
 
-  isDebug && memoryUsageReporter.mark('Files checked');
+  memoryUsageReporter.mark('Files checked');
 
-  const resultsReporter = new ResultsReporter(results, displayAllMessage);
+  const resultsReporter = new ResultsReporter(results, config);
   const { isSuccessfull } = resultsReporter.report();
 
-  if (outputPath) {
-    const resultsWriter = new ResultsWriter(results, outputPath);
+  memoryUsageReporter.mark('Results reported');
+
+  if (config.outputPath) {
+    const resultsWriter = new ResultsWriter(results, config.outputPath);
 
     await resultsWriter.write();
+
+    memoryUsageReporter.mark('Results saved to the file');
   }
 
-  isDebug && memoryUsageReporter.report();
-
+  memoryUsageReporter.report();
   totalTimeReporter.end();
   totalTimeReporter.report();
 
