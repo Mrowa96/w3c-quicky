@@ -52,9 +52,15 @@ export class Config {
       }
     } catch (error) {
       if (error instanceof Error) {
-        console.error(chalk.red(error.message));
+        if (
+          !('code' in error) ||
+          typeof error.code !== 'string' ||
+          !['ENOENT', 'EACCES', 'EISDIR', 'EMFILE', 'EPERM'].includes(error.code)
+        ) {
+          console.error(chalk.red(error.message));
+        }
       } else {
-        console.error(chalk.red('Unknow error during reading/parsing config file.'));
+        console.error(chalk.red('Unknow error during reading/parsing config file.', error));
       }
     }
 
