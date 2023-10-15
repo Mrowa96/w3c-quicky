@@ -7,10 +7,20 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
+      "name": "Launch",
       "skipFiles": ["<node_internals>/**"],
       "program": "${workspaceFolder}/dist/bin/index.js",
       "args": ["./test-build/**/*.html"],
+      "preLaunchTask": "tsc: build - tsconfig.json",
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Test",
+      "skipFiles": ["<node_internals>/**"],
+      "runtimeArgs": ["test"],
+      "runtimeExecutable": "npm",
       "preLaunchTask": "tsc: build - tsconfig.json",
       "outFiles": ["${workspaceFolder}/dist/**/*.js"]
     }

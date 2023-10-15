@@ -31,6 +31,9 @@
     "prepare": "husky install",
     "start": "tsc -w",
     "build": "tsc",
+    "test": "tap --disable-coverage ./dist/**/*.test.js",
+    "test2": "node --test --loader=esmock",
+    "test:watch": "tap --watch ./dist/**/*.test.js",
     "check:lint": "eslint . --ext .ts",
     "check:fmt": "prettier -c \"**/*.{ts,json,md}\"",
     "check:types": "tsc --noEmit",
@@ -49,8 +52,10 @@
     "concurrently": "8.2.1",
     "eslint": "8.50.0",
     "eslint-config-prettier": "9.0.0",
+    "esmock": "2.5.2",
     "husky": "8.0.3",
     "prettier": "3.0.3",
+    "tap": "18.4.5",
     "typescript": "5.2.2"
   }
 }

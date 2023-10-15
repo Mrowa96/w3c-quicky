@@ -1,9 +1,10 @@
 import fs from 'fs/promises';
-import { program } from 'commander';
+import { Command } from 'commander';
 import glob from 'fast-glob';
 import chalk from 'chalk';
 
 export class Config {
+  #command: Command;
   #paths: string[] = [];
   #excludedPaths: string[] = [];
   #isDebug = false;
@@ -12,7 +13,7 @@ export class Config {
   #ignoredRules: string[] = [];
 
   constructor() {
-    program
+    this.#command = new Command()
       .argument('<source>')
       .option('-d --debug', 'Display additional debug information about the process', false)
       .option('-a --all', 'Display all validation errors', false)
@@ -23,9 +24,9 @@ export class Config {
   async init() {
     const configFromFile = await this.#loadConfigFile();
 
-    this.#isDebug = program.getOptionValue('debug');
-    this.#displayAllMessages = program.getOptionValue('all');
-    this.#outputPath = program.getOptionValue('output');
+    this.#isDebug = this.#command.getOptionValue('debug');
+    this.#displayAllMessages = this.#command.getOptionValue('all');
+    this.#outputPath = this.#command.getOptionValue('output');
     this.#excludedPaths = configFromFile.excludedPaths;
     this.#ignoredRules = configFromFile.ignoredRules;
     this.#paths = await this.#preparePaths();
@@ -39,6 +40,7 @@ export class Config {
 
     try {
       const configFileContent = await fs.readFile('./w3cquicky.json', 'utf8');
+
       const config = JSON.parse(configFileContent);
 
       if (typeof config === 'object' && config) {
@@ -60,7 +62,7 @@ export class Config {
           console.error(chalk.red(error.message));
         }
       } else {
-        console.error(chalk.red('Unknow error during reading/parsing config file.', error));
+        console.error(chalk.red('Unknow error during reading/parsing config file', error));
       }
     }
 
@@ -71,7 +73,7 @@ export class Config {
   }
 
   async #preparePaths() {
-    const paths = await glob(program.args);
+    const paths = await glob(this.#command.args);
 
     if (!this.#excludedPaths.length) {
       return paths;
