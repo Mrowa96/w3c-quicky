@@ -62,7 +62,7 @@ export class Config {
           console.error(chalk.red(error.message));
         }
       } else {
-        console.error(chalk.red('Unknow error during reading/parsing config file', error));
+        console.error(chalk.red('Unknow error during reading/parsing config file'), error);
       }
     }
 
