@@ -17,6 +17,24 @@ export class FileValidator {
     this.#config = config;
   }
 
+  get #ignoredRulesRegExp(): RegExp | undefined {
+    if (!this.#config.ignoredRules.length) {
+      return;
+    }
+
+    return new RegExp(
+      this.#config.ignoredRules.reduce((result, ignoredRule, index) => {
+        let newResult = (result += `(${ignoredRule})`);
+
+        if (index !== this.#config.ignoredRules.length - 1) {
+          newResult += '|';
+        }
+
+        return newResult;
+      }, ''),
+    );
+  }
+
   async #sendRequest(tryCount = 0): Promise<Dispatcher.ResponseData> {
     const response = await request('https://validator.w3.org/nu/?out=json', {
       method: 'POST',
@@ -45,9 +63,11 @@ export class FileValidator {
       }
 
       const responseBody = (await body.json()) as FileValidationResult['results'];
-      const preparedMessages = responseBody.messages.filter(
-        ({ message }) => !this.#config.ignoredRules.includes(message),
-      );
+      let preparedMessages = responseBody.messages;
+
+      if (this.#ignoredRulesRegExp) {
+        preparedMessages = responseBody.messages.filter(({ message }) => !this.#ignoredRulesRegExp?.test(message));
+      }
 
       return {
         path: this.#path,
