@@ -1,6 +1,6 @@
 {
   "name": "w3c-quicky",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Tool for validating files according to W3C rules",
   "author": "Paweł Mrowiec (https://github.com/mrowa96)",
   "license": "MIT",
