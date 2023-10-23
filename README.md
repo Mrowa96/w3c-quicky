@@ -10,7 +10,7 @@ Check your code according to w3c rules in fast and efficient way 🔥
 
 ### Config file
 
-Config file will help you have more control over validated files. File is **optional**, but if you decided to use it has to be placed in your project **root** directory and be named as `w3cquicky.json`.
+Config file will help you have more control over validated files. File is **optional**, but if you decided to use it has to be placed in your project **root** directory and be named as `.w3cquicky.json`.
 
 Content of the file has structed like below.
 

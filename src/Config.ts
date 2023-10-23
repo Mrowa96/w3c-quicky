@@ -38,7 +38,7 @@ export class Config {
     let ignoredRules: string[] = [];
 
     try {
-      const configFileContent = await fs.readFile('./w3cquicky.json', 'utf8');
+      const configFileContent = await fs.readFile('./.w3cquicky.json', 'utf8');
       const config = JSON.parse(configFileContent);
 
       if (typeof config === 'object' && config) {
