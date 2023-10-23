@@ -48,7 +48,7 @@ export class ResultsReporter {
         isSuccessfull = false;
 
         if (result.reason instanceof FileValidationError) {
-          this.#logger.displayValidationErrorLine(result.reason.path, addNewLine);
+          this.#logger.displayValidationErrorLine(result.reason, addNewLine);
         } else {
           this.#logger.displayUnknowErrorLine(result.reason, addNewLine);
         }

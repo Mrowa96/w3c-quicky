@@ -1,5 +1,6 @@
 import chalk, { type ChalkInstance } from 'chalk';
 import type { Message } from '../FileValidator/types.js';
+import { FileValidationError } from '../FileValidator/FileValidationError.js';
 
 export class ResultsLogger {
   #coloredLog: Record<string, ChalkInstance> = {
@@ -30,8 +31,9 @@ export class ResultsLogger {
     );
   }
 
-  displayValidationErrorLine(path: string, addNewLine: boolean) {
-    console.log(`${addNewLine ? '\n' : ''}${path} - ERROR`);
+  displayValidationErrorLine(validationError: FileValidationError, addNewLine: boolean) {
+    console.log(`${addNewLine ? '\n' : ''}${validationError.path} - ${chalk.red('ERROR')}`);
+    console.log(`\t${validationError.message}${validationError.cause && `: ${validationError.cause.message}`}`);
   }
 
   displayUnknowErrorLine(reason: unknown, addNewLine: boolean) {

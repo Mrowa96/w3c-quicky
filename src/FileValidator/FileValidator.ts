@@ -58,6 +58,10 @@ export class FileValidator {
       this.#content = await readFile(this.#path, { encoding: 'utf8' });
       const { statusCode, body } = await this.#sendRequest();
 
+      if (statusCode === 429) {
+        throw new Error(`Too many requests. Please wait a bit before trying again.`);
+      }
+
       if (statusCode !== 200) {
         throw new Error(`Invalid status code: ${statusCode}`);
       }
@@ -76,7 +80,7 @@ export class FileValidator {
         },
       };
     } catch (error) {
-      throw new FileValidationError(this.#path, 'Validation failed 😭', {
+      throw new FileValidationError(this.#path, 'Validation failed', {
         cause: error,
       });
     }
