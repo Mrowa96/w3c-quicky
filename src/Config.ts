@@ -83,7 +83,7 @@ export class Config {
       return paths;
     }
 
-    return paths.filter(path => excludedPaths.find(excludedPath => !path.includes(excludedPath)));
+    return paths.filter(path => !excludedPaths.includes(path));
   }
 
   get paths() {
