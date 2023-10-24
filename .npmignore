@@ -43,4 +43,4 @@ dist/**/*.test.*
 .prettierrc.json
 output.json
 tsconfig.json
-w3cquicky.json
+.w3cquicky.json

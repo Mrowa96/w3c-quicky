@@ -40,7 +40,6 @@ export class Config {
 
     try {
       const configFileContent = await fs.readFile('./w3cquicky.json', 'utf8');
-
       const config = JSON.parse(configFileContent);
 
       if (typeof config === 'object' && config) {
@@ -85,7 +84,7 @@ export class Config {
       return paths;
     }
 
-    return paths.filter(path => excludedPaths.find(excludedPath => !path.includes(excludedPath)));
+    return paths.filter(path => !excludedPaths.includes(path));
   }
 
   get paths() {

@@ -17,6 +17,24 @@ export class FileValidator {
     this.#config = config;
   }
 
+  get #ignoredRulesRegExp(): RegExp | undefined {
+    if (!this.#config.ignoredRules.length) {
+      return;
+    }
+
+    return new RegExp(
+      this.#config.ignoredRules.reduce((result, ignoredRule, index) => {
+        let newResult = (result += `(${ignoredRule})`);
+
+        if (index !== this.#config.ignoredRules.length - 1) {
+          newResult += '|';
+        }
+
+        return newResult;
+      }, ''),
+    );
+  }
+
   async #sendRequest(tryCount = 0): Promise<Dispatcher.ResponseData> {
     const response = await request('https://validator.w3.org/nu/?out=json', {
       method: 'POST',
@@ -40,14 +58,20 @@ export class FileValidator {
       this.#content = await readFile(this.#path, { encoding: 'utf8' });
       const { statusCode, body } = await this.#sendRequest();
 
+      if (statusCode === 429) {
+        throw new Error(`Too many requests. Please wait a bit before trying again.`);
+      }
+
       if (statusCode !== 200) {
         throw new Error(`Invalid status code: ${statusCode}`);
       }
 
       const responseBody = (await body.json()) as FileValidationResult['results'];
-      const preparedMessages = responseBody.messages.filter(
-        ({ message }) => !this.#config.ignoredRules.includes(message),
-      );
+      let preparedMessages = responseBody.messages;
+
+      if (this.#ignoredRulesRegExp) {
+        preparedMessages = responseBody.messages.filter(({ message }) => !this.#ignoredRulesRegExp?.test(message));
+      }
 
       return {
         path: this.#path,
@@ -56,7 +80,7 @@ export class FileValidator {
         },
       };
     } catch (error) {
-      throw new FileValidationError(this.#path, 'Validation failed 😭', {
+      throw new FileValidationError(this.#path, 'Validation failed', {
         cause: error,
       });
     }
