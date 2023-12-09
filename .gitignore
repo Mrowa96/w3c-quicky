@@ -34,5 +34,3 @@ output.json
 # Project files and directories
 dist/
 package/
-test-build/
-.w3cquicky.json

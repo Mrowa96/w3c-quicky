@@ -33,7 +33,7 @@ coverage/
 bin/
 package/
 src/
-test-build/
+test_files/
 
 # Project files
 .eslintrc.json
