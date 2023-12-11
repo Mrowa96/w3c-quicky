@@ -11,5 +11,5 @@
       }
     ]
   },
-  "ignorePatterns": ["node_modules", "dist", "test-build"]
+  "ignorePatterns": ["node_modules", "dist", "test_files"]
 }

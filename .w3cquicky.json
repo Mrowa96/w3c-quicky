@@ -1,0 +1,4 @@
+{
+  "excludedPaths": [],
+  "ignoredRules": ["Trailing slash on void elements has no effect and interacts badly with unquoted attribute values."]
+}

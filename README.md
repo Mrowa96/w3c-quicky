@@ -54,7 +54,7 @@ Excluding paths or ignoring rules is not possible through command line at the mo
 
 - Install dependencies via `npm i`
 - Start building process with watcher `npm start`
-- Run script via `node ./dist/bin/index.js <sources>` or use Run and Debug tool in VSCode
+- You can test it through `npm run bin` which will tets files from `test_files` directory
 
 ### TODO:
 

@@ -1,3 +1,3 @@
 dist/
-node_modules
-tets-build
+node_modules/
+test_files/
